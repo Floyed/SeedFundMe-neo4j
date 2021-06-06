@@ -151,6 +151,7 @@ export default function App() {
         <AppBar
           position="absolute"
           className={clsx(classes.appBar, open && classes.appBarShift)}
+          style={{ background: '#35635b' }}
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -167,18 +168,18 @@ export default function App() {
             </IconButton>
             <img
               className={classes.appBarImage}
-              src="img/grandstack.png"
+              src="img/logo.png"
               alt="GRANDstack logo"
             />
-            <Typography
+            {/* <Typography
               component="h1"
               variant="h6"
               color="inherit"
               noWrap
               className={classes.title}
             >
-              Welcome To GRANDstack App
-            </Typography>
+              SeedFundMe
+            </Typography> */}
           </Toolbar>
         </AppBar>
         <Drawer
@@ -224,7 +225,7 @@ export default function App() {
               <Route exact path="/users" component={UserList} />
             </Switch>
 
-            <Box pt={4}>
+            <Box pt={6}>
               <Copyright />
             </Box>
           </Container>

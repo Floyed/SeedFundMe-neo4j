@@ -19,7 +19,7 @@ export default function InvestorsChart() {
 
   return (
     <React.Fragment>
-      <Title>Ratings Distribution</Title>
+      <Title>Mapping investors to Small businesses</Title>
       <DiagramChart />
     </React.Fragment>
   )
