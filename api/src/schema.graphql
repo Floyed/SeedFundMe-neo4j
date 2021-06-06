@@ -3,18 +3,18 @@ scalar DateTime
 scalar PointInput
 
 type User {
-  userId: ID!
+  userId: ID! @id
   name: String
 }
 
 type Investor {
-  investorId: ID!
+  investorId: ID! @id
   name: String
   interests: [Category] @relationship(type: "IN_INTEREST", direction: OUT)
 }
 
 type Business {
-  businessId: ID!
+  businessId: ID! @id
   name: String!
   address: String
   city: String
@@ -24,7 +24,7 @@ type Business {
 }
 
 type Category {
-  categoryId: ID!
+  categoryId: ID! @id
   name: String
   businesses: [Business] @relationship(type: "IN_CATEGORY", direction: IN)
   investorInterest: [Investor] @relationship(type: "IN_INTEREST", direction: IN)
@@ -33,12 +33,12 @@ type Category {
 type Mutation {
   mergeBusinessCategory(category: ID!, businessId: ID!): Business
     @cypher(
-      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $category AS cat MERGE (c:Category {name: cat}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
+      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $category AS cat MERGE (c:Category {categoryId: $category}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
     )
 
   mergeInvestorInterest(category: ID!, investorId: ID!): Business
     @cypher(
-      statement: "MATCH (i:Investor {investorId: $investorId}) UNWIND $category AS cat MERGE (c:Category {name: cat}) MERGE (i)-[:IN_INTEREST]->(c) RETURN i"
+      statement: "MATCH (i:Investor {investorId: $investorId}) UNWIND $category AS cat MERGE (c:Category {categoryId: $category}) MERGE (i)-[:IN_INTEREST]->(c) RETURN i"
     )
 }
 
@@ -52,12 +52,12 @@ type Query {
       statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category)<-[:IN_CATEGORY]-(b:Business) RETURN b"
     )
 
-  getInvestorLinks: [InvestorLink]!
+  investorLinks: [InvestorLink]!
     @cypher(
       statement: "MATCH (investor:Investor)-[:IN_INTEREST]->(category:Category) RETURN {investorId: investor.investorId, categoryId: category.categoryId}"
     )
 
-  getBusinessLinks: [BusinessLink]!
+  businessLinks: [BusinessLink]!
     @cypher(
       statement: "MATCH (b:Business)-[:IN_CATEGORY]->(category:Category) RETURN {businessId: b.businessId, categoryId: category.categoryId}"
     )
