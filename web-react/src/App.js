@@ -3,6 +3,9 @@ import React from 'react'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 
 import UserList from './components/UserList'
+import UserDropdown from './components/UserDropdown'
+
+import UserDropdownInterests from './components/UserDropdownInterests'
 
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
@@ -132,6 +135,15 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '75px',
     paddingRight: '20px',
   },
+
+  palette: {
+    primary: {
+      main: '#35635b',
+    },
+    secondary: {
+      main: '#f44336',
+    },
+  },
 }))
 
 export default function App() {
@@ -210,7 +222,16 @@ export default function App() {
                 <ListItemIcon>
                   <PeopleIcon />
                 </ListItemIcon>
-                <ListItemText primary="Users" />
+                <ListItemText primary="Suggestions" />
+              </ListItem>
+            </Link>
+
+            <Link to="/myinterests" className={classes.navLink}>
+              <ListItem button>
+                <ListItemIcon>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText primary="My expertise/interest" />
               </ListItem>
             </Link>
           </List>
@@ -222,7 +243,12 @@ export default function App() {
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/businesses" component={UserList} />
-              <Route exact path="/users" component={UserList} />
+              <Route exact path="/users" component={UserDropdown} />
+              <Route
+                exact
+                path="/myinterests"
+                component={UserDropdownInterests}
+              />
             </Switch>
 
             <Box pt={6}>

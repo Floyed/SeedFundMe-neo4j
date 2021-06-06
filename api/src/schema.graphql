@@ -47,6 +47,8 @@ type Query {
 
   getUsers: [User]! @cypher(statement: "MATCH (u:User) RETURN u")
 
+  getMyInterests(investorId: ID!): [Category] @cypher(statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category) RETURN c")
+
   getSuggestions(investorId: ID!): [Business]!
     @cypher(
       statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category)<-[:IN_CATEGORY]-(b:Business) RETURN b"
