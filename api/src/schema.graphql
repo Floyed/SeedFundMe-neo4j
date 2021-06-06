@@ -46,4 +46,30 @@ type Query {
   userCount: Int! @cypher(statement: "MATCH (u:User) RETURN COUNT(u)")
 
   getUsers: [User]! @cypher(statement: "MATCH (u:User) RETURN u")
+
+  getSuggestions(investorId: ID!): [Business]!
+    @cypher(
+      statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category)<-[:IN_CATEGORY]-(b:Business) RETURN b"
+    )
+
+  getInvestorLinks: [InvestorLink]!
+    @cypher(
+      statement: "MATCH (investor:Investor)-[:IN_INTEREST]->(category:Category) RETURN {investorId: investor.investorId, categoryId: category.categoryId}"
+    )
+
+  getBusinessLinks: [BusinessLink]!
+    @cypher(
+      statement: "MATCH (b:Business)-[:IN_CATEGORY]->(category:Category) RETURN {businessId: b.businessId, categoryId: category.categoryId}"
+    )
+}
+
+
+type InvestorLink {
+  investorId: ID!
+  categoryId: ID!
+}
+
+type BusinessLink {
+  businessId: ID!
+  categoryId: ID!
 }
