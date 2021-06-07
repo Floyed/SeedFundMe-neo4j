@@ -21,6 +21,7 @@ type Business {
   state: String
   sales: String
   location: Point
+  content: String
   categories: [Category] @relationship(type: "IN_CATEGORY", direction: OUT)
 }
 
@@ -52,7 +53,7 @@ type Query {
 
   getSuggestions(investorId: ID!): [Business]!
     @cypher(
-      statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category)<-[:IN_CATEGORY]-(b:Business) RETURN b"
+      statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category)<-[:IN_CATEGORY]-(b:Business) RETURN DISTINCT b"
     )
 
   investorLinks: [InvestorLink]!
