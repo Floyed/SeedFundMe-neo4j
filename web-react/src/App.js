@@ -29,12 +29,12 @@ import { Link } from 'react-router-dom'
 import {
   ChevronLeft as ChevronLeftIcon,
   Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
 } from '@material-ui/icons'
 import Dashboard from './components/Dashboard'
 import 'beautiful-react-diagrams/styles.css'
-
+import ListIcon from '@material-ui/icons/List'
+import AppsIcon from '@material-ui/icons/Apps'
+import PostAddIcon from '@material-ui/icons/PostAdd'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -211,7 +211,7 @@ export default function App() {
             <Link to="/" className={classes.navLink}>
               <ListItem button>
                 <ListItemIcon>
-                  <DashboardIcon />
+                  <AppsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
               </ListItem>
@@ -220,7 +220,7 @@ export default function App() {
             <Link to="/users" className={classes.navLink}>
               <ListItem button>
                 <ListItemIcon>
-                  <PeopleIcon />
+                  <ListIcon />
                 </ListItemIcon>
                 <ListItemText primary="Suggestions" />
               </ListItem>
@@ -229,9 +229,9 @@ export default function App() {
             <Link to="/myinterests" className={classes.navLink}>
               <ListItem button>
                 <ListItemIcon>
-                  <PeopleIcon />
+                  <PostAddIcon />
                 </ListItemIcon>
-                <ListItemText primary="My expertise/interest" />
+                <ListItemText primary="My Interests" />
               </ListItem>
             </Link>
           </List>
