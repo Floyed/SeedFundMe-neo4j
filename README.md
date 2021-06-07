@@ -1,4 +1,9 @@
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://grandstack.io/deploy-starter-netlify) [![Deploy to Vercel](https://vercel.com/button)](https://grandstack.io/deploy-starter-vercel) [![Provision Neo4j](https://grandstack.io/img/provision-neo4j.png)](https://sandbox.neo4j.com/?usecase=blank-sandbox)
+# SeedFundMe
+SeedFundMe is a tool that provides funding for small businesses of all ethnic backgrounds. 
+
+The primary feature of SeedFundme is to link investors with small businesses using Neo4j's Graph Database and Neo4j's GraphQL Library. Seedfundme encourages socially and economically disadvantaged small business to receive investments from small investors like you and me or Venture Capitalists around the world. Seedfundme consists of a network database that includes small businesses that are linked to their categories and investors can select which categories they are interested to invest in thus linking investors to interests. These interests can either be the expertise of the investor or their personal ethnic preference.
+
+[![Checkout the demo video of the app!](http://img.youtube.com/vi/TXceERxxZlM/0.jpg)](http://www.youtube.com/watch?v=TXceERxxZlM 'Checkout the demo video of the app')
 
 # GRANDstack Starter
 
