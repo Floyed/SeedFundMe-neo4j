@@ -3,96 +3,77 @@ scalar DateTime
 scalar PointInput
 
 type User {
-  userId: ID!
+  userId: ID! @id
   name: String
-  reviews: [Review] @relationship(type: "WROTE", direction: OUT)
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN toFloat(avg(r.stars))"
-    )
-  numReviews: Int
-    @cypher(statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN COUNT(r)")
-  recommendations(first: Int = 3): [Business]
-    @cypher(
-      statement: "MATCH (this)-[:WROTE]->(r:Review)-[:REVIEWS]->(:Business)<-[:REVIEWS]-(:Review)<-[:WROTE]-(:User)-[:WROTE]->(:Review)-[:REVIEWS]->(rec:Business) WHERE NOT EXISTS( (this)-[:WROTE]->(:Review)-[:REVIEWS]->(rec) ) WITH rec, COUNT(*) AS num ORDER BY num DESC LIMIT $first RETURN rec"
-    )
+}
+
+type Investor {
+  investorId: ID! @id
+  name: String
+  interests: [Category] @relationship(type: "IN_INTEREST", direction: OUT)
 }
 
 type Business {
-  businessId: ID!
+  businessId: ID! @id
   name: String!
   address: String
   city: String
   state: String
+  sales: String
   location: Point
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)<-[:REVIEWS]-(r:Review) RETURN coalesce(avg(r.stars),0.0)"
-    )
-  reviews: [Review] @relationship(type: "REVIEWS", direction: IN)
+  content: String
   categories: [Category] @relationship(type: "IN_CATEGORY", direction: OUT)
 }
 
-type Review {
-  reviewId: ID!
-  stars: Float
-  text: String
-  date: DateTime
-  business: Business @relationship(type: "REVIEWS", direction: OUT)
-  user: User @relationship(type: "WROTE", direction: IN)
-}
-
 type Category {
-  name: ID!
+  categoryId: ID! @id
+  name: String
   businesses: [Business] @relationship(type: "IN_CATEGORY", direction: IN)
-}
-
-type RatingCount @exclude {
-  stars: Float!
-  count: Int!
+  investorInterest: [Investor] @relationship(type: "IN_INTEREST", direction: IN)
 }
 
 type Mutation {
-  mergeBusinessCategory(categories: [String!]!, businessId: ID!): Business
+  mergeBusinessCategory(category: String!, businessId: ID!): Business
     @cypher(
-      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $categories AS cat MERGE (c:Category {name: cat}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
+      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $category AS cat MERGE (c:Category {name: $category}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
     )
-  mergeUser(name: String!, userId: ID!): User
+
+  mergeInvestorInterest(category: String!, investorId: ID!): Business
     @cypher(
-      statement: """
-      MERGE (u:User {userId: $userId})
-      ON CREATE SET u.name = $name
-      RETURN u
-      """
-    )
-  mergeBusiness(
-    businessId: ID!
-    name: String!
-    address: String!
-    city: String!
-    state: String!
-    latitude: Float!
-    longitude: Float!
-  ): Business
-    @cypher(
-      statement: """
-      MERGE (b:Business {businessId: $businessId})
-      ON CREATE SET b.name = $name,
-                    b.address = $address,
-                    b.city = $city,
-                    b.state = $state,
-                    b.location = Point({latitude: $latitude, longitude: $longitude})
-      RETURN b
-      """
+      statement: "MATCH (i:Investor {investorId: $investorId}) UNWIND $category AS cat MERGE (c:Category {name: $category}) MERGE (i)-[:IN_INTEREST]->(c) RETURN i"
     )
 }
 
 type Query {
   userCount: Int! @cypher(statement: "MATCH (u:User) RETURN COUNT(u)")
-  ratingsCount: [RatingCount]
-    @cypher(
-      statement: "MATCH (r:Review) WITH r.stars AS stars, COUNT(*) AS count ORDER BY stars RETURN {stars: stars, count: count}"
-    )
 
   getUsers: [User]! @cypher(statement: "MATCH (u:User) RETURN u")
+
+  getMyInterests(investorId: ID!): [Category] @cypher(statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category) RETURN c")
+
+  getSuggestions(investorId: ID!): [Business]!
+    @cypher(
+      statement: "MATCH (i:Investor {investorId: $investorId})-[:IN_INTEREST]->(c:Category)<-[:IN_CATEGORY]-(b:Business) RETURN DISTINCT b"
+    )
+
+  investorLinks: [InvestorLink]!
+    @cypher(
+      statement: "MATCH (investor:Investor)-[:IN_INTEREST]->(category:Category) RETURN {investorId: investor.investorId, categoryId: category.categoryId}"
+    )
+
+  businessLinks: [BusinessLink]!
+    @cypher(
+      statement: "MATCH (b:Business)-[:IN_CATEGORY]->(category:Category) RETURN {businessId: b.businessId, categoryId: category.categoryId}"
+    )
+}
+
+
+type InvestorLink {
+  investorId: ID!
+  categoryId: ID!
+}
+
+type BusinessLink {
+  businessId: ID!
+  categoryId: ID!
 }

@@ -3,6 +3,9 @@ import React from 'react'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 
 import UserList from './components/UserList'
+import UserDropdown from './components/UserDropdown'
+
+import UserDropdownInterests from './components/UserDropdownInterests'
 
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
@@ -26,12 +29,12 @@ import { Link } from 'react-router-dom'
 import {
   ChevronLeft as ChevronLeftIcon,
   Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
 } from '@material-ui/icons'
 import Dashboard from './components/Dashboard'
 import 'beautiful-react-diagrams/styles.css'
-
+import ListIcon from '@material-ui/icons/List'
+import AppsIcon from '@material-ui/icons/Apps'
+import PostAddIcon from '@material-ui/icons/PostAdd'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -132,6 +135,15 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '75px',
     paddingRight: '20px',
   },
+
+  palette: {
+    primary: {
+      main: '#35635b',
+    },
+    secondary: {
+      main: '#f44336',
+    },
+  },
 }))
 
 export default function App() {
@@ -151,6 +163,7 @@ export default function App() {
         <AppBar
           position="absolute"
           className={clsx(classes.appBar, open && classes.appBarShift)}
+          style={{ background: '#35635b' }}
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -167,18 +180,18 @@ export default function App() {
             </IconButton>
             <img
               className={classes.appBarImage}
-              src="img/grandstack.png"
+              src="img/logo.png"
               alt="GRANDstack logo"
             />
-            <Typography
+            {/* <Typography
               component="h1"
               variant="h6"
               color="inherit"
               noWrap
               className={classes.title}
             >
-              Welcome To GRANDstack App
-            </Typography>
+              SeedFundMe
+            </Typography> */}
           </Toolbar>
         </AppBar>
         <Drawer
@@ -198,7 +211,7 @@ export default function App() {
             <Link to="/" className={classes.navLink}>
               <ListItem button>
                 <ListItemIcon>
-                  <DashboardIcon />
+                  <AppsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
               </ListItem>
@@ -207,9 +220,18 @@ export default function App() {
             <Link to="/users" className={classes.navLink}>
               <ListItem button>
                 <ListItemIcon>
-                  <PeopleIcon />
+                  <ListIcon />
                 </ListItemIcon>
-                <ListItemText primary="Users" />
+                <ListItemText primary="Suggestions" />
+              </ListItem>
+            </Link>
+
+            <Link to="/myinterests" className={classes.navLink}>
+              <ListItem button>
+                <ListItemIcon>
+                  <PostAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="My Interests" />
               </ListItem>
             </Link>
           </List>
@@ -221,10 +243,15 @@ export default function App() {
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/businesses" component={UserList} />
-              <Route exact path="/users" component={UserList} />
+              <Route exact path="/users" component={UserDropdown} />
+              <Route
+                exact
+                path="/myinterests"
+                component={UserDropdownInterests}
+              />
             </Switch>
 
-            <Box pt={4}>
+            <Box pt={6}>
               <Copyright />
             </Box>
           </Container>
