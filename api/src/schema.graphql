@@ -19,6 +19,7 @@ type Business {
   address: String
   city: String
   state: String
+  sales: String
   location: Point
   categories: [Category] @relationship(type: "IN_CATEGORY", direction: OUT)
 }
@@ -31,14 +32,14 @@ type Category {
 }
 
 type Mutation {
-  mergeBusinessCategory(category: ID!, businessId: ID!): Business
+  mergeBusinessCategory(category: String!, businessId: ID!): Business
     @cypher(
-      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $category AS cat MERGE (c:Category {categoryId: $category}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
+      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $category AS cat MERGE (c:Category {name: $category}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
     )
 
-  mergeInvestorInterest(category: ID!, investorId: ID!): Business
+  mergeInvestorInterest(category: String!, investorId: ID!): Business
     @cypher(
-      statement: "MATCH (i:Investor {investorId: $investorId}) UNWIND $category AS cat MERGE (c:Category {categoryId: $category}) MERGE (i)-[:IN_INTEREST]->(c) RETURN i"
+      statement: "MATCH (i:Investor {investorId: $investorId}) UNWIND $category AS cat MERGE (c:Category {name: $category}) MERGE (i)-[:IN_INTEREST]->(c) RETURN i"
     )
 }
 

@@ -3,8 +3,8 @@ import { useQuery, gql } from '@apollo/client'
 import { withStyles } from '@material-ui/core/styles'
 import { TableCell, TableRow, Paper } from '@material-ui/core'
 import Chip from '@material-ui/core/Chip'
-
 import Title from './Title'
+import InterestsMutation from './InterestsMutation'
 
 const styles = (theme) => ({
   root: {
@@ -50,14 +50,22 @@ function InterestsForm(props) {
   if (loading) return <p>Loading</p>
   return (
     <Paper className={classes.root}>
-      <Title>User List</Title>
+      <Title>My interests</Title>
       <TableRow>
         <TableCell component="th" scope="row">
           {data.getMyInterests.map((n) => {
-            return <Chip label={n.name} clickable color="primary" />
+            return (
+              <Chip
+                label={n.name}
+                clickable
+                style={{ background: '#35635b', color: '#ffffff' }}
+              />
+            )
           })}
         </TableCell>
       </TableRow>
+
+      <InterestsMutation investorId={investorId} />
     </Paper>
   )
 }

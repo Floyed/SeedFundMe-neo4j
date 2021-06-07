@@ -63,7 +63,7 @@ function UserDropdownInterests(props) {
 
   return (
     <Paper className={classes.root}>
-      <Title>Suggestions for Investor</Title>
+      <Title>Select Investor</Title>
 
       <FormControl className={classes.formControl}>
         <InputLabel id="demo-simple-select-label">Investor</InputLabel>

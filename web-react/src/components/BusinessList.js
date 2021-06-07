@@ -55,7 +55,7 @@ function BusinessList(props) {
 
   return (
     <Paper className={classes.root}>
-      <Title>User List</Title>
+      <Title>List of businesses: </Title>
 
       {loading && !error && <p>Loading...</p>}
       {error && !loading && <p>Error</p>}
@@ -68,8 +68,10 @@ function BusinessList(props) {
                   <TableSortLabel>Name</TableSortLabel>
                 </Tooltip>
               </TableCell>
-              <TableCell key="avgStars">Average Stars</TableCell>
-              <TableCell key="numReviews">Number of Reviews</TableCell>
+              <TableCell key="location">City</TableCell>
+              <TableCell key="location">State</TableCell>
+              <TableCell key="sales">Sales</TableCell>
+              <TableCell key="categories">Categories</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,6 +80,18 @@ function BusinessList(props) {
                 <TableRow key={n.businessId}>
                   <TableCell component="th" scope="row">
                     {n.name}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {n.city}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {n.state}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {n.sales}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {n.categories}
                   </TableCell>
                   {/* <TableCell>
                     {n.avgStars ? n.avgStars.toFixed(2) : '-'}
